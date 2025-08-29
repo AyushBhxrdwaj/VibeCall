@@ -9,7 +9,7 @@ const Home = () => {
     <section className="flex size-full flex-col gap-10 text-white ">
       <div className="h-[250px] w-full rounded-[20px] bg-hero">
         <div className="flex h-full flex-col justify-between max-md:px-5 max:md:py-8 lg:p-11">
-          <h2 className="backdrop-blur-md mb-3 bg-black/30 py-2 px-3 rounded-md max-w-[270px] text-base font-mono">
+          <h2 className="backdrop-blur-md mb-3 bg-black/30 py-4 px-3 rounded-md max-w-[300px] text-base font-mono">
             Upcoming Meeting at 12:00 AM
           </h2>
           <div className="flex flex-col gap-2 ">
