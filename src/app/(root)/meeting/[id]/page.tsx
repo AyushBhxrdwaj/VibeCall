@@ -1,31 +1,33 @@
-'use client'
-import Loader from '@/components/Loader'
-import MeetingRoom from '@/components/MeetingRoom'
-import MeetingSetup from '@/components/MeetingSetup'
-import { useGetCallById } from '@/hooks/useGetCallById'
-import { useUser } from '@clerk/nextjs'
-import { StreamCall, StreamTheme } from '@stream-io/video-react-sdk'
-import React, { useState } from 'react'
+"use client";
+import Loader from "@/components/Loader";
+import MeetingRoom from "@/components/MeetingRoom";
+import MeetingSetup from "@/components/MeetingSetup";
+import { useGetCallById } from "@/hooks/useGetCallById";
+import { useUser } from "@clerk/nextjs";
+import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
+import React, { useState, use } from "react";
 
-const Meeting = ({params:{id}}:{params:{id:string}}) => {
-  const {user,isLoaded}=useUser()
-  const [isSetupComplete, setisSetupComplete] = useState(false)
-  const {call,isCallLoading}=useGetCallById(id)
+const Meeting = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
+  const { user, isLoaded } = useUser();
+  const [isSetupComplete, setisSetupComplete] = useState(false);
+  const { call, isCallLoading } = useGetCallById(id);
 
-  if(!user)throw new Error("User not found")
-  if(!isLoaded||isCallLoading) return <Loader/>
+  if (!user) throw new Error("User not found");
+  if (!isLoaded || isCallLoading) return <Loader />;
   return (
-    <main className='h-screen w-full'>
+    <main className="h-screen w-full">
       <StreamCall call={call}>
-        <StreamTheme> 
-          {!isSetupComplete?(
-            <MeetingSetup setisSetupComplete={setisSetupComplete}/>
-          ):(
-          <MeetingRoom/>)}
+        <StreamTheme>
+          {!isSetupComplete ? (
+            <MeetingSetup setisSetupComplete={setisSetupComplete} />
+          ) : (
+            <MeetingRoom />
+          )}
         </StreamTheme>
       </StreamCall>
     </main>
-  )
-}
+  );
+};
 
-export default Meeting
+export default Meeting;
