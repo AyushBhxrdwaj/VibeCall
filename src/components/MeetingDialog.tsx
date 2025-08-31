@@ -11,8 +11,9 @@ type MeetingDialogProps = {
   className?: string;
   buttonText?: string;
   handleClick: () => void;
-  image: string;
-  buttonIcon: string;
+  image?: string;
+  buttonIcon?: string;
+  children?: React.ReactNode;
 };
 
 const MeetingDialog = ({
@@ -24,6 +25,7 @@ const MeetingDialog = ({
   buttonText,
   buttonIcon,
   handleClick,
+  children,
 }: MeetingDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -39,6 +41,8 @@ const MeetingDialog = ({
           >
             {title}
           </DialogTitle>
+
+          {children}
 
           <Button
             className="focus-visible:ring-0 focus-visible:ring-offset-0"
