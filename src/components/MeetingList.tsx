@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import MeetingDialog from "./MeetingDialog";
 import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
-import {toast} from 'sonner'
+import { toast } from "sonner";
+import { Textarea } from "./ui/textarea";
+import DatePicker from "react-datepicker";
 
 const MeetingList = () => {
   const router = useRouter();
@@ -54,9 +56,11 @@ const MeetingList = () => {
       toast("Meeting created successfully");
     } catch (error) {
       console.log(error);
-      toast('Failed to create Meeting')
+      toast("Failed to create Meeting");
     }
   };
+
+  const meetingLink=`${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <HomeCard
@@ -90,6 +94,56 @@ const MeetingList = () => {
         handleClick={() => setmeetingState("isJoiningMeeting")}
         className="bg-[#392200]"
       />
+
+      {!callDetails ? (
+        <MeetingDialog
+          isOpen={meetingState === "isScheduleMeeting"}
+          onClose={() => setmeetingState(undefined)}
+          title="Create Meeting"
+          handleClick={createMeeting}
+        >
+          <div className="flex flex-col gap-3 ">
+            <label className="text-base text-normal leading-[22px] text-gray-300 ">
+              Add a Description
+            </label>
+            <Textarea
+              className="border-none bg-stone-600 focus-visible:ring-offset-0 focus-visible:ring-0"
+              onChange={(e) =>
+                setvalues({ ...values, description: e.target.value })
+              }
+            />
+          </div>
+          <div className="flex flex-col w-full gap-2.5">
+            <label className="text-base text-normal leading-[22px] text-gray-300 ">
+              Select Date and Time
+            </label>
+            <DatePicker
+              selected={values.datetime}
+              onChange={(date) => setvalues({ ...values, datetime: date! })}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              className="w-full rounded bg-stone-700 p-2 focus:outline-none text-white"
+              timeCaption="Time"
+              minDate={new Date()}
+            />
+          </div>
+        </MeetingDialog>
+      ) : (
+        <MeetingDialog
+          isOpen={meetingState === "isScheduleMeeting"}
+          onClose={() => setmeetingState(undefined)}
+          title="Meeting Created"
+          handleClick={() => {
+            toast('Link Copied')
+            navigator.clipboard.writeText(meetingLink)
+          }}
+          image="/icons/checked.svg"
+          buttonIcon="/icons/copy.svg"
+          buttonText="Copy Link"
+        />
+      )}
 
       <MeetingDialog
         isOpen={meetingState === "isInstantMeeting"}
