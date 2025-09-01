@@ -9,7 +9,7 @@ import {
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { sidebarLinks } from "../../constants";
+import { sidebarLinks } from "../constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -41,8 +41,7 @@ const Mobilenav = () => {
           <div className="flex h-[calc(100vh-72px)] flex-col justify-between items-center overflow-y-auto">
             <section className="flex h-full flex-col gap-6 pt-16 text-gray-50">
               {sidebarLinks.map((link) => {
-                const isActive =
-                  pathname === link.route
+                const isActive = pathname === link.route;
                 return (
                   <SheetClose asChild key={link.route}>
                     <Link
