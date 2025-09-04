@@ -66,33 +66,28 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recording" }) => {
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => {
           const call = meeting as Call;
-          const description = call.state?.custom.description
-            ? String(call.state.custom.description).substring(0, 20)
-            : "No description";
-          const dateStr = call.state?.startsAt
-            ? call.state.startsAt.toLocaleString()
-            : "";
           const isRecordingTab = type === "recording";
           return (
             <MeetingCard
-              key={call.id}
+              key={(meeting as Call).id}
               icon={
                 type == "ended"
                   ? "/icons/previous.svg"
                   : type === "upcoming"
                   ? "/icons/upcoming.svg"
-                  : "/icons/recording.svg"
+                  : "/icons/recordings.svg"
               }
-              title={description}
-              date={dateStr}
+              title={(meeting as Call).state?.custom?.description||(meeting as CallRecording).filename?.substring(0,20)||"No description"}
+              date={ (meeting as Call).state?.startsAt?.toLocaleString() ||
+              (meeting as CallRecording).start_time?.toLocaleString()}
               isPreviousMeeting={type === "ended"}
               buttonIcon1={isRecordingTab ? "/icons/play.svg" : undefined}
               handleClick={
                 isRecordingTab
-                  ? () => router.push(`/recording/${call.id}`)
-                  : () => router.push(`/meeting/${call.id}`)
+                ?()=>router.push(`${(meeting as CallRecording).url}`):
+                ()=>router.push(`/meeting/${(meeting as Call).id}`)
               }
-              link={`${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${call.id}`}
+              link={type==='recording'?(meeting as CallRecording).url:`${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`}
               buttonText={isRecordingTab ? "Play" : "Start"}
             />
           );
