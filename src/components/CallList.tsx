@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import MeetingCard from "./MeetingCard";
 import Loader from "./Loader";
+import { toast } from "sonner";
 const CallList = ({ type }: { type: "ended" | "upcoming" | "recording" }) => {
   const { endedCalls, upcomingCalls, recordingCalls, isloading } =
     useGetCalls();
@@ -51,6 +52,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recording" }) => {
         const recordings = results.filter(call=>call.recordings.length>0).flatMap(call=>call.recordings)
         setRecordings(recordings);
       } catch (err) {
+        toast('Try again later')
         console.error("Failed to fetch recordings", err);
       }
     };
