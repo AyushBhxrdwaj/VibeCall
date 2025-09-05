@@ -1,4 +1,3 @@
-//@ts-nocheck
 "use client";
 import { useGetCalls } from "@/hooks/useGetCalls";
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
@@ -67,7 +66,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recording" }) => {
     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => {
-          const call = meeting as Call;
+          // const call = meeting as Call;
           const isRecordingTab = type === "recording";
           return (
             <MeetingCard
