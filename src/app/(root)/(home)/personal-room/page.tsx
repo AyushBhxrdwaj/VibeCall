@@ -16,11 +16,11 @@ const Table=({title,desc}:{title:string,desc:string})=>(
 )
 const Room = () => {
   const {user}=useUser()
+  const router = useRouter()
   const meetingId=user?.id
   const {call}=useGetCallById(meetingId!)
   const client=useStreamVideoClient();
   if(!user || !client) return
-  const router = useRouter()
 
   
   const startRoom=async()=>{
